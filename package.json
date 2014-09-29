@@ -1,0 +1,27 @@
+{
+  "name": "mongo-qc",
+  "version": "0.0.0",
+  "description": "MongoDB Collection Shortcuts",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/artjock/mongo-qc.git"
+  },
+  "keywords": [
+    "mongo",
+    "mongodb",
+    "api"
+  ],
+  "author": "Artur Burtsev <artjock@gmail.com>",
+  "license": "BSD-2-Clause",
+  "bugs": {
+    "url": "https://github.com/artjock/mongo-qc/issues"
+  },
+  "dependencies": {
+    "pzero": "~0.4.6",
+    "xtnd": "0.0.12"
+  }
+}
