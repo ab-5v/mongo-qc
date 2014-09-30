@@ -22,6 +22,7 @@
   },
   "dependencies": {
     "pzero": "~0.4.6",
-    "xtnd": "0.0.12"
+    "xtnd": "0.0.12",
+    "mongodb": "~1.4.17"
   }
 }

@@ -1,21 +1,6 @@
 var xtnd = require('xtnd');
 var pzero = require('pzero');
 
-/**
- * Examples
- *
- *  require('mongo-qc')
- *      .connect({collections: ['users'])
- *      .then(function(db) {
- *          db.users.findOne({name: 'artur'});
- *      });
- *
- *  var db = require('mongo-qc');
- *
- *  db.users.findOne()
- *
- */
-
 var defaults = {
     host: 'localhost',
     port: 27017,
@@ -27,7 +12,9 @@ var api = module.exports = {
 
     db: null,
 
-    id: function(hex) {},
+    id: function() {},
+
+    ready: pzero(),
 
     close: function() {
         api.db.close();
@@ -37,22 +24,22 @@ var api = module.exports = {
         var mongo = options.mongo || require('mongodb');
         var client = mongo.MongoClient;
 
-        api.id = function() {
+        api.id = function(hex) {
             return new (mongo.ObjectID).createFromHexString(hex);
-        };
+        }
 
-        return connect(xtnd({}, defaults, options, {client: client}));
+        connect(xtnd({}, defaults, {client: client}, options));
+
+        return api.ready;
     }
 };
 
 function connect(options) {
-
     var url = 'mongodb://' + options.host + ':' + options.port + '/' + options.name;
-    var promise = pzero();
 
     options.client.connect(url, function(err, db) {
 
-        if (err) { return promise.reject(err); }
+        if (err) { return api.ready.reject(err); }
 
         var collections = options.collections.map(function(name) {
             var collection = pzero();
@@ -62,21 +49,16 @@ function connect(options) {
             return collection;
         });
 
+        api.db = db;
+
         pzero
             .when(collections)
             .then(function(collections) {
-
                 collections.map(function(collection) {
                     api[ collection.collectionName ] = collection;
                 });
-
-                return api;
             })
-            .pipe(promise);
-
-        api.db = db;
+            .pipe(api.ready);
     });
-
-    return promise;
 }
 
