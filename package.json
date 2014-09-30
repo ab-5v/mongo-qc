@@ -1,6 +1,6 @@
 {
   "name": "mongo-qc",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "MongoDB Collection Shortcuts",
   "main": "index.js",
   "scripts": {
